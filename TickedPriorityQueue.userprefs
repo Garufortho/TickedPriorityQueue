@@ -1,9 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" ctype="Workspace" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="TickedPriorityQueue/Source/Unit Tests/TickedQueueItemComparerUnit.cs" ctype="Workbench">
+  <MonoDevelop.Ide.Workbench ActiveDocument="TickedPriorityQueue/Source/Implementation/TickedQueueItem.cs" ctype="Workbench">
     <Files>
       <File FileName="TickedPriorityQueue/AssemblyInfo.cs" Line="13" Column="34" />
-      <File FileName="TickedPriorityQueue/Source/Implementation/TickedQueueItem.cs" Line="89" Column="1" />
+      <File FileName="TickedPriorityQueue/Source/Implementation/TickedQueueItem.cs" Line="2" Column="1" />
       <File FileName="TickedPriorityQueue/Source/Implementation/TickedQueue.cs" Line="68" Column="1" />
       <File FileName="TickedPriorityQueue/Source/Interfaces/ITicked.cs" Line="23" Column="9" />
       <File FileName="TickedPriorityQueue/Source/Implementation/ATicked.cs" Line="43" Column="1" />
@@ -19,13 +19,9 @@
         <State expanded="True">
           <Node name="TickedPriorityQueue" expanded="True">
             <Node name="References" expanded="True" />
-            <Node name="Source" expanded="True">
-              <Node name="Implementation" expanded="True" />
-              <Node name="Interfaces" expanded="True" />
-              <Node name="Unit Tests" expanded="True">
-                <Node name="TickedQueueItemComparerUnit.cs" selected="True" />
-              </Node>
-            </Node>
+          </Node>
+          <Node name="TickedPriorityQueue Unit Tests" expanded="True" selected="True">
+            <Node name="References" expanded="True" />
           </Node>
         </State>
       </Pad>
@@ -36,11 +32,7 @@
         <State />
       </Pad>
       <Pad Id="MonoDevelop.NUnit.TestPad">
-        <State expanded="True" selected="True">
-          <Node name="TickedPriorityQueue" expanded="True">
-            <Node name="TickedPriorityQueue" expanded="True" />
-          </Node>
-        </State>
+        <State expanded="True" selected="True" />
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>

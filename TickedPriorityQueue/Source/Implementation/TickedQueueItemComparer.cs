@@ -3,7 +3,8 @@ using System.Collections.Generic;
 namespace TickedPriorityQueue
 {
 	/// <summary>
-	/// Priority comparer for <see cref="TickedPriorityQueue.TickedQueueItem"/>
+	/// Priority comparer for <see cref="TickedPriorityQueue.TickedQueueItem"/>.
+	/// Only used internally.
 	/// </summary>
 	internal sealed class TickedQueueItemComparer : IComparer<TickedQueueItem>
 	{

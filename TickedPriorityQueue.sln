@@ -3,12 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TickedPriorityQueue", "TickedPriorityQueue\TickedPriorityQueue.csproj", "{64E866FA-05A0-423C-8D93-C0B32A54769E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TickedPriorityQueue Unit Tests", "TickedPriorityQueue Unit Tests\TickedPriorityQueue Unit Tests.csproj", "{22239D52-EE79-4DCD-A808-F459BFB38DC0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{22239D52-EE79-4DCD-A808-F459BFB38DC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22239D52-EE79-4DCD-A808-F459BFB38DC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22239D52-EE79-4DCD-A808-F459BFB38DC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22239D52-EE79-4DCD-A808-F459BFB38DC0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{64E866FA-05A0-423C-8D93-C0B32A54769E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{64E866FA-05A0-423C-8D93-C0B32A54769E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64E866FA-05A0-423C-8D93-C0B32A54769E}.Release|Any CPU.ActiveCfg = Release|Any CPU

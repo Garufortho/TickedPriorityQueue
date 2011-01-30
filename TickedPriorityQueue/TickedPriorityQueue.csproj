@@ -31,7 +31,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="nunit.framework, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
@@ -40,17 +39,15 @@
     <Compile Include="Source\Implementation\TickedQueueItem.cs" />
     <Compile Include="Source\Implementation\ATicked.cs" />
     <Compile Include="Source\Implementation\TickedQueueItemComparer.cs" />
-    <Compile Include="Source\Unit Tests\TickedQueueItemComparerUnit.cs" />
     <Compile Include="Source\Implementation\TickedObject.cs" />
-    <Compile Include="Source\Unit Tests\TickedQueueItemUnit.cs" />
-    <Compile Include="Source\Unit Tests\TickedQueueUnit.cs" />
-    <Compile Include="Source\Unit Tests\QueueSaturationUnit.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Source\" />
     <Folder Include="Source\Interfaces\" />
     <Folder Include="Source\Implementation\" />
-    <Folder Include="Source\Unit Tests\" />
+    <Folder Include="Source\Internal Unit Tests\" />
+    <Folder Include="Source\Internal Unit Tests\" />
+    <Folder Include="Source\Internal Unit Tests\" />
   </ItemGroup>
 </Project>
