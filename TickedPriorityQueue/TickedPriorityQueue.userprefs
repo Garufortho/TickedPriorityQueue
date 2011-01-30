@@ -1,0 +1,51 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" ctype="Workspace" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="TickedPriorityQueue/Source/Unit Tests/TickedQueueItemComparerUnit.cs" ctype="Workbench">
+    <Files>
+      <File FileName="TickedPriorityQueue/AssemblyInfo.cs" Line="13" Column="34" />
+      <File FileName="TickedPriorityQueue/Source/Implementation/TickedQueueItem.cs" Line="89" Column="1" />
+      <File FileName="TickedPriorityQueue/Source/Implementation/TickedQueue.cs" Line="68" Column="1" />
+      <File FileName="TickedPriorityQueue/Source/Interfaces/ITicked.cs" Line="23" Column="9" />
+      <File FileName="TickedPriorityQueue/Source/Implementation/ATicked.cs" Line="43" Column="1" />
+      <File FileName="TickedPriorityQueue/Source/Implementation/TickedQueueItemComparer.cs" Line="39" Column="1" />
+      <File FileName="TickedPriorityQueue/Source/Unit Tests/TickedQueueItemComparerUnit.cs" Line="44" Column="14" />
+      <File FileName="TickedPriorityQueue/Source/Implementation/TickedObject.cs" Line="56" Column="1" />
+      <File FileName="TickedPriorityQueue/Source/Unit Tests/TickedQueueItemUnit.cs" Line="29" Column="7" />
+      <File FileName="TickedPriorityQueue/Source/Unit Tests/TickedQueueUnit.cs" Line="12" Column="16" />
+      <File FileName="TickedPriorityQueue/Source/Unit Tests/QueueSaturationUnit.cs" Line="21" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="TickedPriorityQueue" expanded="True">
+            <Node name="References" expanded="True" />
+            <Node name="Source" expanded="True">
+              <Node name="Implementation" expanded="True" />
+              <Node name="Interfaces" expanded="True" />
+              <Node name="Unit Tests" expanded="True">
+                <Node name="TickedQueueItemComparerUnit.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="ClassPad">
+        <State expanded="True" selected="True" />
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+      <Pad Id="MonoDevelop.NUnit.TestPad">
+        <State expanded="True" selected="True">
+          <Node name="TickedPriorityQueue" expanded="True">
+            <Node name="TickedPriorityQueue" expanded="True" />
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches ctype="PinnedWatchStore" />
+</Properties>
