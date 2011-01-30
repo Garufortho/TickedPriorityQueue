@@ -1,5 +1,4 @@
 using System;
-using C5;
 
 namespace TickedPriorityQueue
 {
