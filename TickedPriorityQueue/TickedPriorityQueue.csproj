@@ -46,7 +46,5 @@
     <Folder Include="Source\" />
     <Folder Include="Source\Interfaces\" />
     <Folder Include="Source\Implementation\" />
-    <Folder Include="Source\Internal Unit Tests\" />
-    <Folder Include="Source\Internal Unit Tests\" />
   </ItemGroup>
 </Project>
