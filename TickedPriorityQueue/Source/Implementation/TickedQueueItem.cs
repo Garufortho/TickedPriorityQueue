@@ -89,17 +89,33 @@ namespace TickedPriorityQueue
 		}
 		
 		/// <summary>
-		/// Checks if this instance wraps the specified ITicked object.
+		/// Checks if this instance wraps the specified <see cref="TickedPriorityQueue.ITicked"/> object.
 		/// </summary>
 		/// <returns>
 		/// <c>true</c> if the wrapped object is ticked, else <c>false</c>.
 		/// </returns>
 		/// <param name='ticked'>
-		/// The ITicked object to check.
+		/// The <see cref="TickedPriorityQueue.ITicked"/> object to check.
 		/// </param>
 		public bool ContainsTicked(ITicked ticked)
 		{
 			return ticked == _ticked;
+		}
+		
+		/// <summary>
+		/// Returns the earliest time the instance can be ticked.
+		/// </summary>
+		public DateTime NextTickTime
+		{
+			get { return _nextTickTime; }
+		}
+		
+		/// <summary>
+		/// Returns the wrapped <see cref="TickedPriorityQueue.ITicked"/> object.
+		/// </summary>
+		public ITicked Ticked
+		{
+			get { return _ticked; }
 		}
 	}
 }

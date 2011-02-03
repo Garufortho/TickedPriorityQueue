@@ -111,6 +111,7 @@ namespace TickedPriorityQueue
 		public void Update(DateTime currentTime)
 		{
 			int found = 0;
+			List<TickedQueueItem> toRecycle = new List<TickedQueueItem>();
 						
 			foreach(var item in _queue)
 			{
@@ -119,8 +120,14 @@ namespace TickedPriorityQueue
 				if (item.CheckTickReady(currentTime))
 				{
 					++found;
+					toRecycle.Add(item);
 					item.Tick(currentTime);
 				}
+			}
+			foreach(var item in toRecycle)
+			{
+				_queue.Remove(item);
+				Add(item.Ticked, currentTime);
 			}
 		}
 	}

@@ -22,7 +22,6 @@ namespace TickedPriorityQueue
 			{
 				TickedObject obj = new TickedObject(Callback, i);
 				obj.TickLength = 0.5f;
-				if (i == 9999) obj.Priority = 5;
 				queue.Add(obj, time);
 			}
 			
@@ -30,7 +29,7 @@ namespace TickedPriorityQueue
 			
 			for (int i = 0; i < 1000; ++i)
 			{
-				time = time.AddMilliseconds(5);
+				time = time.AddMilliseconds(1000);
 				queue.Update(time);
 			}
 			Assert.IsTrue(stagnantCalled, "Checking a low priority item doesn't get swamped");

@@ -48,6 +48,5 @@
     <Folder Include="Source\Implementation\" />
     <Folder Include="Source\Internal Unit Tests\" />
     <Folder Include="Source\Internal Unit Tests\" />
-    <Folder Include="Source\Internal Unit Tests\" />
   </ItemGroup>
 </Project>

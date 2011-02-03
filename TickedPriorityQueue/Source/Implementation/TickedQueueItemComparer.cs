@@ -36,7 +36,7 @@ namespace TickedPriorityQueue
 			int comp = a.Priority.CompareTo(b.Priority);
 			if (comp == 0)
 			{
-				int ret = a.TickLength.CompareTo(b.TickLength);
+				int ret = a.NextTickTime.CompareTo(b.NextTickTime);
 				return ret;
 			}
 			

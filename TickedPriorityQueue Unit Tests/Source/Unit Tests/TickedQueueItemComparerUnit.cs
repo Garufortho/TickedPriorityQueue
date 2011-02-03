@@ -29,7 +29,7 @@ namespace TickedPriorityQueue
 		}
 		
 		[Test()]
-		public void TestTimeCompare()
+		public void TestTickTimeCompare()
 		{
 			TickedObject a = new TickedObject(Callback, 0);
 			a.Priority = 2;
@@ -46,6 +46,26 @@ namespace TickedPriorityQueue
 			a.Priority = 1;
 			itemA = new TickedQueueItem(a);
 			Assert.AreEqual(-1, comparer.Compare(itemA, itemB), "A should be sorted lower due to the priority");
+		}
+		
+		[Test()]
+		public void TestTimeCompare()
+		{
+			TickedObject a = new TickedObject(Callback, 0);
+			a.Priority = 2;
+			a.TickLength = 2;
+			TickedObject b = new TickedObject(Callback, 1);
+			b.Priority = 2;
+			b.TickLength = 1;
+			
+			TickedQueueItem itemA = new TickedQueueItem(a, DateTime.UtcNow);
+			TickedQueueItem itemB = new TickedQueueItem(b, DateTime.UtcNow.AddSeconds(2));
+			
+			TickedQueueItemComparer comparer = new TickedQueueItemComparer();
+			Assert.AreEqual(-1, comparer.Compare(itemA, itemB), "A should be lower due to earlier tick time");
+			b.Priority = 1;
+			itemB = new TickedQueueItem(b);
+			Assert.AreEqual(1, comparer.Compare(itemA, itemB), "B should be sorted lower due to the priority");
 		}
 				
 		void Callback(object obj)
