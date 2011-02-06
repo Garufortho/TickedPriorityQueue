@@ -10,12 +10,12 @@ namespace TickedPriorityQueue
 		/// <summary>
 		/// Constant default priority, used to set Priortity in the constructor.
 		/// </summary>
-		public const int DefaultPriority = 1;
+		public readonly int DefaultPriority = 1;
 		
 		/// <summary>
 		/// Constant default tick length, used to set TickLength in the constructor.
 		/// </summary>
-		public const double DefaultTickLength = 0.25;
+		public readonly double DefaultTickLength = 0.25;
 		
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TickedPriorityQueue.ATicked"/> class.

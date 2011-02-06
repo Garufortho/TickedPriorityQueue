@@ -16,7 +16,13 @@ namespace TickedPriorityQueue
 		/// <summary>
 		/// Default max ITicked objects to be processed per update.
 		/// </summary>
-		public const int DefaultMaxProcessedPerUpdate = 10;
+		public readonly int DefaultMaxProcessedPerUpdate = 10;
+		
+		/// <summary>
+		/// Sets whether new items added are looped or not.
+		/// Overriden by setting the loop mode in Add.
+		/// </summary>
+		public bool LoopByDefault { get; set; }
 		
 		private List<TickedQueueItem> _queue;
 		
@@ -25,6 +31,7 @@ namespace TickedPriorityQueue
 		/// </summary>
 		public TickedQueue ()
 		{
+			LoopByDefault = true;
 			_queue = new List<TickedQueueItem>();
 			MaxProcessedPerUpdate = DefaultMaxProcessedPerUpdate;
 		}
@@ -50,7 +57,21 @@ namespace TickedPriorityQueue
 		/// </param>
 		public void Add(ITicked ticked)
 		{
-			Add(ticked, DateTime.UtcNow);
+			Add(ticked, DateTime.UtcNow, LoopByDefault);
+		}
+		
+		/// <summary>
+		/// Add the specified ticked object to the queue.
+		/// </summary>
+		/// <param name='ticked'>
+		/// The ITicked object.
+		/// </param>
+		/// <param name='looped'>
+		/// Sets whether the ticked item will be called once, or looped.
+		/// </param>
+		public void Add(ITicked ticked, bool looped)
+		{
+			Add(ticked, DateTime.UtcNow, looped);
 		}
 		
 		/// <summary>
@@ -64,7 +85,25 @@ namespace TickedPriorityQueue
 		/// </param>
 		public void Add(ITicked ticked, DateTime currentTime)
 		{
+			Add(ticked, currentTime, LoopByDefault);
+		}
+		
+		/// <summary>
+		/// Add the specified ticked object to the queue, using currentTime as the time to use for the tick check.
+		/// </summary>
+		/// <param name='ticked'>
+		/// The ITicked object.
+		/// </param>
+		/// <param name='currentTime'>
+		/// Current time. Doesn't have to be the real time.
+		/// </param>
+		/// <param name='looped'>
+		/// Sets whether the ticked item will be called once, or looped.
+		/// </param>
+		public void Add(ITicked ticked, DateTime currentTime, bool looped)
+		{
 			TickedQueueItem item = new TickedQueueItem(ticked, currentTime);
+			item.Loop = looped;
 			int index = _queue.BinarySearch(item, new TickedQueueItemComparer());
 			
 			//if the binary search doesn't find something identical, it'll return a
@@ -121,13 +160,17 @@ namespace TickedPriorityQueue
 				{
 					++found;
 					toRecycle.Add(item);
+					
 					item.Tick(currentTime);
 				}
 			}
 			foreach(var item in toRecycle)
 			{
 				_queue.Remove(item);
-				Add(item.Ticked, currentTime);
+				if (item.Loop)
+				{
+					Add(item.Ticked, currentTime);
+				}
 			}
 		}
 	}

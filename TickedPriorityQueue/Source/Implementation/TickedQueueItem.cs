@@ -41,6 +41,7 @@ namespace TickedPriorityQueue
 			if (_ticked == null) throw new ArgumentNullException("Missing a valid ITicked reference");
 			_nextTickTime = currentTime.AddSeconds(_ticked.TickLength);
 			Priority = _ticked.Priority;
+			Loop = true;
 		}
 		
 		/// <summary>
@@ -116,6 +117,14 @@ namespace TickedPriorityQueue
 		public ITicked Ticked
 		{
 			get { return _ticked; }
+		}
+		
+		/// <summary>
+		/// Sets whether the instance will be repeatedly ticked, or ticked once
+		/// </summary>
+		public bool Loop
+		{
+			get; set;
 		}
 	}
 }

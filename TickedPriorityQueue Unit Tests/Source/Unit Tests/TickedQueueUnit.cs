@@ -1,8 +1,8 @@
-#if DEBUG
 using System;
 using NUnit.Framework;
-namespace TickedPriorityQueue
-{
+using TickedPriorityQueue;
+
+namespace TickedPriorityQueueUnitTests{
 	[TestFixture()]
 	public class TickedQueueUnit
 	{
@@ -127,4 +127,3 @@ namespace TickedPriorityQueue
 		}
 	}
 }
-#endif

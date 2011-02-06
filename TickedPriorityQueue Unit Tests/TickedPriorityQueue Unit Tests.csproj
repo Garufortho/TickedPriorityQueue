@@ -1,1 +1,56 @@
-<?xml version="1.0" encoding="utf-8"?><Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">  <PropertyGroup>    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>    <ProductVersion>9.0.21022</ProductVersion>    <SchemaVersion>2.0</SchemaVersion>    <ProjectGuid>{22239D52-EE79-4DCD-A808-F459BFB38DC0}</ProjectGuid>    <OutputType>Library</OutputType>    <RootNamespace>TickedPriorityQueueUnitTests</RootNamespace>    <AssemblyName>TickedPriorityQueue Unit Tests</AssemblyName>    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>  </PropertyGroup>  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">    <DebugSymbols>true</DebugSymbols>    <DebugType>full</DebugType>    <Optimize>false</Optimize>    <OutputPath>bin\Debug</OutputPath>    <DefineConstants>DEBUG</DefineConstants>    <ErrorReport>prompt</ErrorReport>    <WarningLevel>4</WarningLevel>    <ConsolePause>false</ConsolePause>  </PropertyGroup>  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">    <DebugType>none</DebugType>    <Optimize>false</Optimize>    <OutputPath>bin\Release</OutputPath>    <ErrorReport>prompt</ErrorReport>    <WarningLevel>4</WarningLevel>    <ConsolePause>false</ConsolePause>  </PropertyGroup>  <ItemGroup>    <Reference Include="nunit.framework, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />    <Reference Include="System" />  </ItemGroup>  <ItemGroup>    <ProjectReference Include="..\TickedPriorityQueue\TickedPriorityQueue.csproj">      <Project>{64E866FA-05A0-423C-8D93-C0B32A54769E}</Project>      <Name>TickedPriorityQueue</Name>    </ProjectReference>  </ItemGroup>  <ItemGroup>    <Folder Include="Source\" />    <Folder Include="Source\Unit Tests\" />    <Folder Include="Source\Unit Tests\" />    <Folder Include="Source\Unit Tests\" />  </ItemGroup>  <ItemGroup>    <Compile Include="Source\Unit Tests\TickedQueueUnit.cs" />    <Compile Include="Source\Unit Tests\QueueSaturationUnit.cs" />    <Compile Include="Source\Unit Tests\TickedQueueItemComparerUnit.cs" />    <Compile Include="Source\Unit Tests\TickedQueueItemUnit.cs" />  </ItemGroup>  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" /></Project>
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{22239D52-EE79-4DCD-A808-F459BFB38DC0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>TickedPriorityQueueUnitTests</RootNamespace>
+    <AssemblyName>TickedPriorityQueue Unit Tests</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TickedPriorityQueue\TickedPriorityQueue.csproj">
+      <Project>{64E866FA-05A0-423C-8D93-C0B32A54769E}</Project>
+      <Name>TickedPriorityQueue</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Source\" />
+    <Folder Include="Source\Unit Tests\" />
+    <Folder Include="Source\Unit Tests\" />
+    <Folder Include="Source\Unit Tests\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Source\Unit Tests\TickedQueueUnit.cs" />
+    <Compile Include="Source\Unit Tests\QueueSaturationUnit.cs" />
+    <Compile Include="Source\Unit Tests\TickedQueueItemComparerUnit.cs" />
+    <Compile Include="Source\Unit Tests\TickedQueueItemUnit.cs" />
+    <Compile Include="Source\Unit Tests\QueueLoopUnit.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

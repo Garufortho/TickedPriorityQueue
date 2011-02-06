@@ -1,8 +1,9 @@
-#if DEBUG
 using System;
 using NUnit.Framework;
 using System.Reflection;
-namespace TickedPriorityQueue
+using TickedPriorityQueue;
+
+namespace TickedPriorityQueueUnitTests
 {
 	[TestFixture()]
 	public class QueueSaturationUnit
@@ -41,4 +42,3 @@ namespace TickedPriorityQueue
 		}
 	}
 }
-#endif
