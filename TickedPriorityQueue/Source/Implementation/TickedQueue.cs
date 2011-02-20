@@ -18,6 +18,8 @@ namespace TickedPriorityQueue
 		/// </summary>
 		public readonly int DefaultMaxProcessedPerUpdate = 10;
 		
+		public readonly float DefaultMaxProcessingTimePerUpdate = 0.1f;
+		
 		/// <summary>
 		/// Sets whether new items added are looped or not.
 		/// Overriden by setting the loop mode in Add.
@@ -34,15 +36,25 @@ namespace TickedPriorityQueue
 			LoopByDefault = true;
 			_queue = new List<TickedQueueItem>();
 			MaxProcessedPerUpdate = DefaultMaxProcessedPerUpdate;
+			_maxProcessingTimePerUpdate = TimeSpan.FromSeconds(DefaultMaxProcessingTimePerUpdate);
 		}
 		
 		/// <summary>
 		/// Gets or sets the max ITicked objects to be processed in a single Update call.
 		/// </summary>
-		/// <value>
-		/// The number of ITicked objects which will be processed in an Update.
-		/// </value>
+
 		public int MaxProcessedPerUpdate { get; set; }
+		
+		private TimeSpan _maxProcessingTimePerUpdate;
+		/// <summary>
+		/// Gets or sets the max time allowed for processing ITicked objects in a single Update call.
+		/// Note - this is in real time, setting custom update times will not affect it.
+		/// </summary>
+		public float MaxProcessingTimePerUpdate
+		{ 
+			get { return (float)_maxProcessingTimePerUpdate.TotalSeconds; }
+			set { _maxProcessingTimePerUpdate = TimeSpan.FromSeconds(value); }
+		}
 		
 		/// <summary>
 		/// Gets the internal queue count.
@@ -151,6 +163,8 @@ namespace TickedPriorityQueue
 		{
 			int found = 0;
 			List<TickedQueueItem> toRecycle = new List<TickedQueueItem>();
+			
+			DateTime startTime = DateTime.UtcNow;
 						
 			foreach(var item in _queue)
 			{
@@ -162,6 +176,11 @@ namespace TickedPriorityQueue
 					toRecycle.Add(item);
 					
 					item.Tick(currentTime);
+				}
+				
+				if (DateTime.UtcNow - startTime > _maxProcessingTimePerUpdate)
+				{
+					break;
 				}
 			}
 			foreach(var item in toRecycle)
