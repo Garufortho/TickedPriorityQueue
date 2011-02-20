@@ -42,7 +42,6 @@ namespace TickedPriorityQueue
 		/// <summary>
 		/// Gets or sets the max ITicked objects to be processed in a single Update call.
 		/// </summary>
-
 		public int MaxProcessedPerUpdate { get; set; }
 		
 		private TimeSpan _maxProcessingTimePerUpdate;
