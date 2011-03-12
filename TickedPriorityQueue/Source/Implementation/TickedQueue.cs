@@ -31,7 +31,7 @@ namespace TickedPriorityQueue
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TickedPriorityQueue.TickedQueue"/> class.
 		/// </summary>
-		public TickedQueue ()
+		public TickedQueue()
 		{
 			LoopByDefault = true;
 			_queue = new List<TickedQueueItem>();
@@ -45,6 +45,7 @@ namespace TickedPriorityQueue
 		public int MaxProcessedPerUpdate { get; set; }
 		
 		private TimeSpan _maxProcessingTimePerUpdate;
+		
 		/// <summary>
 		/// Gets or sets the max time allowed for processing ITicked objects in a single Update call.
 		/// Note - this is in real time, setting custom update times will not affect it.
