@@ -161,19 +161,21 @@ namespace TickedPriorityQueue
 		/// </param>
 		public void Update(DateTime currentTime)
 		{
-			int found = 0;
-			List<TickedQueueItem> toRecycle = new List<TickedQueueItem>();
-			
+			int found = 0;			
 			DateTime startTime = DateTime.UtcNow;
 						
-			foreach(var item in _queue)
+			foreach(var item in new List<TickedQueueItem>(_queue))
 			{
 				if (found > MaxProcessedPerUpdate) break;
 				
 				if (item.CheckTickReady(currentTime))
 				{
 					++found;
-					toRecycle.Add(item);
+					_queue.Remove(item);
+					if (item.Loop)
+					{
+						Add(item.Ticked, currentTime);
+					}
 					
 					item.Tick(currentTime);
 				}
@@ -181,14 +183,6 @@ namespace TickedPriorityQueue
 				if (DateTime.UtcNow - startTime > _maxProcessingTimePerUpdate)
 				{
 					break;
-				}
-			}
-			foreach(var item in toRecycle)
-			{
-				_queue.Remove(item);
-				if (item.Loop)
-				{
-					Add(item.Ticked, currentTime);
 				}
 			}
 		}
