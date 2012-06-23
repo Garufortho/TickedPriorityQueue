@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using TickedPriorityQueue;
 
-namespace TickedPriorityQueueUnitTests{
+namespace TickedPriorityQueue {
 	[TestFixture()]
 	public class TickedQueueItemUnit
 	{
@@ -23,6 +23,21 @@ namespace TickedPriorityQueueUnitTests{
 			
 			DateTime testTimePlus8 = testTime.AddSeconds(8);
 			Assert.IsTrue(item.CheckTickReady(testTimePlus8), "CheckTickReady should return true when time is after next scheduled tick");
+		}
+		
+		[Test()]
+		public void TestTickTimeReset()
+		{
+			TickedObject obj = new TickedObject(null, null);
+			obj.Priority = 6;
+			obj.TickLength = 7;
+			var now = DateTime.UtcNow;
+			TickedQueueItem item = new TickedQueueItem(obj, now);
+			Assert.AreEqual(item.NextTickTime, now.AddSeconds(obj.TickLength), "Initial next tick time did not match");
+			
+			var future = now.AddSeconds(3);
+			item.ResetTickFromTime(future);
+			Assert.AreEqual(item.NextTickTime, future.AddSeconds(obj.TickLength), "Next tick time did not match after reset");
 		}
 	}
 }

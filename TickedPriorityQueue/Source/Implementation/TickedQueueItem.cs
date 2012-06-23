@@ -10,6 +10,11 @@ namespace TickedPriorityQueue
 		private ITicked _ticked;
 		private DateTime _nextTickTime;
 		
+		internal void ResetTickFromTime(DateTime time)
+		{
+			_nextTickTime = time.AddSeconds(_ticked.TickLength);	
+		}
+		
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TickedPriorityQueue.TickedQueueItem"/> class.
 		/// </summary>
@@ -39,10 +44,11 @@ namespace TickedPriorityQueue
 		{
 			_ticked = ticked;
 			if (_ticked == null) throw new ArgumentNullException("Missing a valid ITicked reference");
-			_nextTickTime = currentTime.AddSeconds(_ticked.TickLength);
+			ResetTickFromTime(currentTime);
 			Priority = _ticked.Priority;
 			Loop = true;
 		}
+		
 		
 		/// <summary>
 		/// Checks whether the class is ready to be ticked.
@@ -66,7 +72,7 @@ namespace TickedPriorityQueue
 		/// </param>
 		public void Tick(DateTime current)
 		{
-			_nextTickTime = current.AddSeconds(_ticked.TickLength);
+			ResetTickFromTime(current);
 			_ticked.OnTicked();
 		}
 		
