@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TickedPriorityQueue
 {
+	
 	/// <summary>
 	/// A class which manages ITicked objects, ticking them in order of priority.
 	/// </summary>
@@ -13,6 +15,8 @@ namespace TickedPriorityQueue
 	/// </remarks>>
 	public sealed class TickedQueue
 	{
+		public static readonly int PreAllocateSize = 100;
+	
 		/// <summary>
 		/// Default max ITicked objects to be processed per update.
 		/// </summary>
@@ -26,7 +30,15 @@ namespace TickedPriorityQueue
 		/// </summary>
 		public bool LoopByDefault { get; set; }
 		
+		/// <summary>
+		/// The queue.
+		/// </summary>
 		private List<TickedQueueItem> _queue;
+		
+		/// <summary>
+		/// Pre-allocated working queue from which items will be evaluated.
+		/// </summary>
+		private List<TickedQueueItem> _workingQueue;
 		
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TickedPriorityQueue.TickedQueue"/> class.
@@ -34,7 +46,8 @@ namespace TickedPriorityQueue
 		public TickedQueue()
 		{
 			LoopByDefault = true;
-			_queue = new List<TickedQueueItem>();
+			_queue = new List<TickedQueueItem>(PreAllocateSize);
+			_workingQueue = new List<TickedQueueItem>(PreAllocateSize);
 			MaxProcessedPerUpdate = DefaultMaxProcessedPerUpdate;
 			_maxProcessingTimePerUpdate = TimeSpan.FromSeconds(DefaultMaxProcessingTimePerUpdate);
 		}
@@ -116,6 +129,28 @@ namespace TickedPriorityQueue
 		{
 			TickedQueueItem item = new TickedQueueItem(ticked, currentTime);
 			item.Loop = looped;
+			Add(item, currentTime);
+		}
+		
+		/// <summary>
+		/// Add the specified item and currentTime.
+		/// </summary>
+		/// <param name='item'>
+		/// The TickedQueueItem element to add to the list.
+		/// </param>
+		/// <param name='currentTime'>
+		/// Current time. Doesn't have to be the real time.
+		/// </param>
+		/// <remarks>
+		/// Notice that unlike the two public methods that receive an ITicked, 
+		/// this one expects a TickedQueueItem.  It was done to avoid having to
+		/// discard a TickedQueueItem instance every time that a looped item is
+		/// ticked and re-added to the queue.  As such, it expects to already 
+		/// have been configured for if to loop or not.
+		/// </remarks>
+		private void Add(TickedQueueItem item, DateTime currentTime)
+		{
+			item.ResetTickFromTime(currentTime);
 			int index = _queue.BinarySearch(item, new TickedQueueItemComparer());
 			
 			//if the binary search doesn't find something identical, it'll return a
@@ -164,19 +199,22 @@ namespace TickedPriorityQueue
 			int found = 0;			
 			DateTime startTime = DateTime.UtcNow;
 						
-			foreach(var item in new List<TickedQueueItem>(_queue))
+			_workingQueue.Clear();
+			_workingQueue.AddRange(_queue);
+			
+			for (int i = 0; i < _workingQueue.Count; i++)
 			{
 				if (found > MaxProcessedPerUpdate) break;
 				
+				var item  = _workingQueue[i];
 				if (item.CheckTickReady(currentTime))
 				{
 					++found;
 					_queue.Remove(item);
 					if (item.Loop)
 					{
-						Add(item.Ticked, currentTime);
+						Add(item, currentTime);
 					}
-					
 					item.Tick(currentTime);
 				}
 				
@@ -186,6 +224,7 @@ namespace TickedPriorityQueue
 				}
 			}
 		}
+		
 	}
 }
 
