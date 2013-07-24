@@ -29,6 +29,13 @@ namespace TickedPriorityQueue
 		/// Overriden by setting the loop mode in Add.
 		/// </summary>
 		public bool LoopByDefault { get; set; }
+
+		/// <summary>
+		/// Gets or sets a value indicating whether this queue instance is paused.
+		/// Paused queues will ignore Update calls.
+		/// </summary>
+		/// <value><c>true</c> if this instance is paused; otherwise, <c>false</c>.</value>
+		public bool IsPaused { get; set; }
 		
 		/// <summary>
 		/// The queue.
@@ -196,6 +203,8 @@ namespace TickedPriorityQueue
 		/// </param>
 		public void Update(DateTime currentTime)
 		{
+			if (IsPaused) return;
+
 			int found = 0;			
 			DateTime startTime = DateTime.UtcNow;
 						

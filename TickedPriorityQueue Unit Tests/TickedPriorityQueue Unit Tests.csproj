@@ -42,8 +42,6 @@
   <ItemGroup>
     <Folder Include="Source\" />
     <Folder Include="Source\Unit Tests\" />
-    <Folder Include="Source\Unit Tests\" />
-    <Folder Include="Source\Unit Tests\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Source\Unit Tests\TickedQueueUnit.cs" />
