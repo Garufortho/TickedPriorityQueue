@@ -13,16 +13,31 @@ namespace TickedPriorityQueueUnitTests{
 		int cCalled = 0;
 		
 		int test3 = -1;
+
+
+		void InitializeTestValues()
+		{
+			test1 = -1;
+
+			aCalled = 0;
+			bCalled = 0;
+			cCalled = 0;
+
+			test3 = -1;
+
+		}
+
 		
 		[Test()]
 		public void TestPriority ()
 		{
+			InitializeTestValues();
 			TickedQueue queue = new TickedQueue();
-			TickedObject a = new TickedObject(Callback1, 0);
+			TickedObject a = new TickedObject(CallbackSetTest1, 0);
 			a.Priority = 0;
-			TickedObject b = new TickedObject(Callback1, 2);
+			TickedObject b = new TickedObject(CallbackSetTest1, 2);
 			b.Priority = 2;
-			TickedObject c = new TickedObject(Callback1, 1);
+			TickedObject c = new TickedObject(CallbackSetTest1, 1);
 			c.Priority = 1;
 			
 			queue.Add(a);
@@ -36,7 +51,77 @@ namespace TickedPriorityQueueUnitTests{
 			Assert.AreNotEqual(-1, test1, "test1 should have changed after all three items ticked");
 			Assert.AreEqual(2, test1, "test1 should have been updated to the last object");
 		}
-		
+
+
+		[Test()]
+		public void TestPauseBasic ()
+		{
+			InitializeTestValues();
+
+			TickedQueue queue = new TickedQueue();
+			TickedObject a = new TickedObject(CallbackSetTest1, 0);
+
+			queue.Add(a);
+
+			Assert.AreEqual(-1, test1, "test1 should be initialized with -1");
+			queue.IsPaused = true;
+			queue.Update();
+			Assert.AreEqual(-1, test1, "test1 should be initialized with -1");
+			queue.Update(DateTime.UtcNow.AddSeconds(2));
+			Assert.AreEqual(-1, test1, "test1 should be initialized with -1");
+		}
+
+
+		[Test()]
+		public void TestUnPauseBasic ()
+		{
+			InitializeTestValues();
+
+			TickedQueue queue = new TickedQueue();
+			TickedObject a = new TickedObject(CallbackSetTest1, 0);
+
+			queue.Add(a);
+
+			Assert.AreEqual(-1, test1, "test1 should be initialized with -1");
+			queue.IsPaused = true;
+			queue.Update();
+			Assert.AreEqual(-1, test1, "test1 should be initialized with -1");
+			queue.Update(DateTime.UtcNow.AddSeconds(2));
+			Assert.AreEqual(-1, test1, "test1 should be initialized with -1");
+
+			queue.IsPaused = false;
+			queue.Update();
+			Assert.AreEqual(-1, test1, "test1 should be set to 0 after the queue is updated");
+		}
+
+		public void TestUnPausePriority ()
+		{
+			InitializeTestValues();
+			TickedQueue queue = new TickedQueue();
+			TickedObject a = new TickedObject(CallbackSetTest1, 0);
+			a.Priority = 0;
+			TickedObject b = new TickedObject(CallbackSetTest1, 2);
+			b.Priority = 2;
+			TickedObject c = new TickedObject(CallbackSetTest1, 1);
+			c.Priority = 1;
+
+			queue.Add(a);
+			queue.Add(b);
+			queue.Add(c);
+
+			Assert.AreEqual(-1, test1, "test1 should be initialized with -1");
+			queue.IsPaused = true;
+			queue.Update(DateTime.UtcNow.AddSeconds(2));
+			Assert.AreEqual(-1, test1, "test1 should be still be -1, since we are paused");
+
+			queue.IsPaused = false;
+			queue.Update(DateTime.UtcNow.AddSeconds(2));
+			Assert.AreNotEqual(-1, test1, "test1 should have changed after all three items ticked");
+			Assert.AreEqual(2, test1, "test1 should have been updated to the last object");
+		}
+
+
+
 		[Test()]
 		public void TestTiming ()
 		{
@@ -89,7 +174,7 @@ namespace TickedPriorityQueueUnitTests{
 			Assert.AreEqual(-1, test3, "Callback should not have been called for removed item");
 		}
 		
-		void Callback1(object obj)
+		void CallbackSetTest1(object obj)
 		{
 			if (obj is int)
 			{
