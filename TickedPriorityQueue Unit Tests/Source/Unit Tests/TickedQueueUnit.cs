@@ -167,11 +167,28 @@ namespace TickedPriorityQueueUnitTests{
 			queue.Update(DateTime.UtcNow.AddSeconds(2));
 			Assert.AreEqual(1, test3, "Callback should have been called for added item");
 			
-			queue.Remove(a);
+			bool result = queue.Remove(a);
 			test3 = -1;
+
+			Assert.IsTrue(result, "Call to remove the item should have returned true");
 			
 			queue.Update(DateTime.UtcNow.AddSeconds(4));
 			Assert.AreEqual(-1, test3, "Callback should not have been called for removed item");
+		}
+
+		[Test()]
+		public void TestInvalidRemove()
+		{
+			TickedQueue queue = new TickedQueue();
+			TickedObject a = new TickedObject(Callback3, 0);
+			a.TickLength = 1;
+			queue.Add(a);
+
+			var b = new TickedObject(Callback3, 0);
+
+			bool result = queue.Remove(b);
+
+			Assert.IsFalse(result, "Call to remove the B should have returned false");
 		}
 
 		[Test()]

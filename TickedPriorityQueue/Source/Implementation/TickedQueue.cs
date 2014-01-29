@@ -186,16 +186,19 @@ namespace TickedPriorityQueue
 		/// <param name='ticked'>
 		/// The ITicked object to remove.
 		/// </param>
-		public void Remove(ITicked ticked)
+		/// <returns>>True if the item was successfully removed, false otherwise</returns>
+		public bool Remove(ITicked ticked)
 		{
+			bool found = false;
 			foreach(var item in _queue)
 			{
 				if (item.ContainsTicked(ticked))
 				{
-					_queue.Remove(item);
+					found = _queue.Remove(item);
 					break;
 				}
 			}
+			return found;
 		}
 		
 		/// <summary>
