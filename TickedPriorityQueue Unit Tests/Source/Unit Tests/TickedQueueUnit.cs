@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using NUnit.Framework;
 using TickedPriorityQueue;
 
@@ -24,7 +25,6 @@ namespace TickedPriorityQueueUnitTests{
 			cCalled = 0;
 
 			test3 = -1;
-
 		}
 
 		
@@ -173,7 +173,32 @@ namespace TickedPriorityQueueUnitTests{
 			queue.Update(DateTime.UtcNow.AddSeconds(4));
 			Assert.AreEqual(-1, test3, "Callback should not have been called for removed item");
 		}
-		
+
+		[Test()]
+		public void TestEnumerator()
+		{
+			TickedQueue queue = new TickedQueue();
+			TickedObject a = new TickedObject(Callback3, 0);
+			a.TickLength = 1;
+
+			queue.Add(a);
+
+			Assert.IsTrue(queue.Items.Any(), "There should be items on the queue");
+			Assert.IsTrue(queue.Items.Contains(a), "Queue should contain the new item");
+			Assert.AreEqual(1, queue.Items.Count(), "Queue should contain only one item");
+
+			TickedObject b = new TickedObject(Callback3, 0);
+			queue.Add(b);
+
+			Assert.IsTrue(queue.Items.Contains(b), "Queue should contain the second item");
+			Assert.AreEqual(2, queue.Items.Count(), "Queue should contain two items");
+
+			queue.Remove(a);
+
+			Assert.AreEqual(1, queue.Items.Count(), "Queue should contain only one item again");
+			Assert.IsFalse(queue.Items.Contains(a), "Queue should not contain the original item");
+		}
+
 		void CallbackSetTest1(object obj)
 		{
 			if (obj is int)

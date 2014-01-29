@@ -80,6 +80,18 @@ namespace TickedPriorityQueue
 		/// Gets the internal queue count.
 		/// </summary>
 		public int QueueCount { get { return _queue.Count; } }
+
+		/// <summary>
+		/// Returns an IEnumerable for the items on the queue
+		/// </summary>
+		/// <value>The items.</value>
+		public IEnumerable<ITicked> Items 
+		{ 
+			get 
+			{ 
+				return _queue.Select(x => x.Ticked); 
+			} 
+		}
 		
 		/// <summary>
 		/// Add the specified ticked object to the queue.
