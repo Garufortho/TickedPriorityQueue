@@ -229,6 +229,63 @@ namespace TickedPriorityQueueUnitTests{
 			Assert.IsFalse(result, "Call to remove the B should have returned false");
 		}
 
+		[Test()]
+		public void TestNoExceptionHandler()
+		{
+			var queue = new TickedQueue();
+			queue.MaxProcessedPerUpdate = 1;
+
+			int aVal = 0;
+			var a = new TickedObject((x => aVal++), 0);
+			var b = new TickedObject((x => {throw new NotImplementedException("Not implemented method");}), 0);
+
+			queue.Add(a, true);
+			queue.Add(b, true);
+
+			// Verify the queue works as expected
+			queue.Update(DateTime.UtcNow.AddSeconds(0.5f));
+			Assert.AreEqual(1, aVal, "Invalid aVal after the first update");
+
+			TestDelegate testDelegate = (delegate() { queue.Update(DateTime.UtcNow.AddSeconds(1f)); } );
+
+			Assert.Throws<NotImplementedException>(testDelegate, "Expected a not-implemented exception");
+			Assert.AreEqual(1, aVal, "Invalid aVal after the third update");
+
+			queue.Update(DateTime.UtcNow.AddSeconds(1.5f));
+			Assert.AreEqual(2, aVal, "Invalid aVal after the third update");
+		}
+
+		[Test()]
+		public void TestExceptionHandler()
+		{
+			Exception raised = null;
+			ITicked itemException = null;
+
+			var queue = new TickedQueue();
+			queue.MaxProcessedPerUpdate = 1;
+			queue.TickExceptionHandler += delegate(Exception e, ITicked t) { raised = e; itemException = t; };
+
+			int aVal = 0;
+			var a = new TickedObject((x => aVal++), 0);
+			var b = new TickedObject((x => {throw new NotImplementedException("HELLO WORLD!");}), 0);
+
+
+			queue.Add(a, true);
+			queue.Add(b, true);
+
+			// Verify the queue works as expected
+			queue.Update(DateTime.UtcNow.AddSeconds(0.5f));
+			Assert.AreEqual(1, aVal, "Invalid aVal after the first update");
+
+			TestDelegate testDelegate = (delegate() { queue.Update(DateTime.UtcNow.AddSeconds(1f)); } );
+
+			Assert.DoesNotThrow(testDelegate, "Did not expect any exceptions to be thrown");
+			Assert.AreEqual(1, aVal, "Invalid aVal after the third update");
+			Assert.AreEqual("HELLO WORLD!", raised.Message);
+			Assert.IsInstanceOf<NotImplementedException>(raised);
+			Assert.AreSame(itemException, b);
+		}
+
 
 		[Test()]
 		public void TestMaxProcessedPerUpdate()

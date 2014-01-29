@@ -46,6 +46,14 @@ namespace TickedPriorityQueue
 		/// Pre-allocated working queue from which items will be evaluated.
 		/// </summary>
 		private List<TickedQueueItem> _workingQueue;
+
+		/// <summary>
+		/// Gets or sets the exception handler.
+		/// </summary>
+		/// <value>The exception handler.</value>
+		/// <remarks>>If the queue has an exception handler, any exceptions caught
+		/// will be sent to the handler - otherwise they are thrown</remarks>
+		public Action<Exception, ITicked> TickExceptionHandler { get; set; }
 		
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TickedPriorityQueue.TickedQueue"/> class.
@@ -239,7 +247,21 @@ namespace TickedPriorityQueue
 					{
 						Add(item, currentTime);
 					}
-					item.Tick(currentTime);
+					try
+					{
+						item.Tick(currentTime);
+					}
+					catch (Exception e)
+					{
+						if (TickExceptionHandler != null)
+						{
+							TickExceptionHandler(e, item.Ticked);
+						}
+						else
+						{
+							throw e;
+						}
+					}
 				}
 				
 				if (DateTime.UtcNow - startTime > _maxProcessingTimePerUpdate)
