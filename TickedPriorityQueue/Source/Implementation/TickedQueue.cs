@@ -220,7 +220,7 @@ namespace TickedPriorityQueue
 		{
 			if (IsPaused) return;
 
-			int found = 0;			
+			int found = 1;
 			DateTime startTime = DateTime.UtcNow;
 						
 			_workingQueue.Clear();

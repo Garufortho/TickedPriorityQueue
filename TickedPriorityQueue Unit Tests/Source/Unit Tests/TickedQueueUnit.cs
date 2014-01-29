@@ -191,6 +191,50 @@ namespace TickedPriorityQueueUnitTests{
 			Assert.IsFalse(result, "Call to remove the B should have returned false");
 		}
 
+
+		[Test()]
+		public void TestMaxProcessedPerUpdate()
+		{
+			var queue = new TickedQueue();
+			queue.MaxProcessedPerUpdate = 1;
+
+			int aVal = 0;
+			var a = new TickedObject((x => aVal++), 0);
+
+			int bVal = 0;
+			var b = new TickedObject((x => bVal++), 0);
+
+			int cVal = 0;
+			var c = new TickedObject((x => cVal++), 0);
+
+			queue.Add(a, true);
+			queue.Add(b, true);
+			queue.Add(c, true);
+
+			// Verify the queue works as expected
+			queue.Update(DateTime.UtcNow.AddSeconds(0.5f));
+			Assert.AreEqual(1, aVal, "Invalid aVal after the first update");
+			Assert.AreEqual(0, bVal, "Invalid bVal after the first update");
+			Assert.AreEqual(0, cVal, "Invalid cVal after the first update");
+
+			queue.Update(DateTime.UtcNow.AddSeconds(1f));
+			Assert.AreEqual(1, aVal, "Invalid aVal after the second update");
+			Assert.AreEqual(1, bVal, "Invalid bVal after the second update");
+			Assert.AreEqual(0, cVal, "Invalid cVal after the second update");
+
+			queue.Update(DateTime.UtcNow.AddSeconds(1.5f));
+			Assert.AreEqual(1, aVal, "Invalid aVal after the third update");
+			Assert.AreEqual(1, bVal, "Invalid bVal after the third update");
+			Assert.AreEqual(1, cVal, "Invalid cVal after the third update");
+
+			queue.MaxProcessedPerUpdate = 2;
+
+			queue.Update(DateTime.UtcNow.AddSeconds(2f));
+			Assert.AreEqual(2, aVal, "Invalid aVal after the first update");
+			Assert.AreEqual(2, bVal, "Invalid bVal after the first update");
+			Assert.AreEqual(1, cVal, "Invalid cVal after the first update");
+		}
+
 		[Test()]
 		public void TestEnumerator()
 		{
