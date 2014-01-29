@@ -202,6 +202,8 @@ namespace TickedPriorityQueue
 			{
 				if (item.ContainsTicked(ticked))
 				{
+					// In case the item is added to a work queue
+					item.IsActive = false;	
 					found = _queue.Remove(item);
 					break;
 				}
@@ -239,7 +241,7 @@ namespace TickedPriorityQueue
 				if (found > MaxProcessedPerUpdate) break;
 				
 				var item  = _workingQueue[i];
-				if (item.CheckTickReady(currentTime))
+				if (item.IsActive && item.CheckTickReady(currentTime))
 				{
 					++found;
 					_queue.Remove(item);

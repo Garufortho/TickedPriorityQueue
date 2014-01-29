@@ -214,6 +214,80 @@ namespace TickedPriorityQueueUnitTests{
 			Assert.AreEqual(1, cVal, "Invalid cVal after the third update");
 		}
 
+		/// <summary>
+		/// Verifies that we can remove an item even while it is already on the work queue 
+		/// </summary>
+		[Test()]
+		public void TestRemoveFromHandlerWhileInWorkQueue()
+		{
+			var queue = new TickedQueue();
+			queue.MaxProcessedPerUpdate = 10;
+
+			int aVal = 0;
+			var a = new TickedObject((x => aVal++), 0);
+
+			int bVal = 0;
+			var b = new TickedObject((x => bVal++), 0); 
+
+			int cVal = 0;
+			var c = new TickedObject((x => { cVal += 2; queue.Remove(b); }), 0);
+
+			queue.Add(a, true);
+			queue.Add(c, true); // c will execute before B and remove it
+			queue.Add(b, true);
+
+			// Verify the queue works as expected
+			queue.Update(DateTime.UtcNow.AddSeconds(0.5f));
+			Assert.AreEqual(1, aVal, "Invalid aVal after the first update");
+			Assert.AreEqual(2, cVal, "Invalid cVal after the first update");
+			Assert.AreEqual(0, bVal, "b should not have executed");
+			Assert.IsFalse(queue.Items.Contains(b), "b should not be on the queue");
+
+			queue.Update(DateTime.UtcNow.AddSeconds(1f));
+			Assert.AreEqual(2, aVal, "Invalid aVal after the second update");
+			Assert.AreEqual(4, cVal, "Invalid cVal after the second update");
+			Assert.AreEqual(0, bVal, "b should not have executed");
+			Assert.IsFalse(queue.Items.Contains(b), "b should still not be on the queue");
+		}
+
+		/// <summary>
+		/// Verifies that we can remove an item even while it is already on the work queue 
+		/// </summary>
+		[Test()]
+		public void TestRemoveFromHandlerAfterPassingInWorkQueue()
+		{
+			var queue = new TickedQueue();
+			queue.MaxProcessedPerUpdate = 10;
+
+			int aVal = 0;
+			var a = new TickedObject((x => aVal++), 0);
+
+			int bVal = 0;
+			var b = new TickedObject((x => bVal++), 0); 
+
+			int cVal = 0;
+			var c = new TickedObject((x => { cVal += 2; queue.Remove(b); }), 0);
+
+			queue.Add(a, true);
+			queue.Add(b, true);
+			queue.Add(c, true); // c will remove b, so it should execute only once
+
+			// Verify the queue works as expected
+			queue.Update(DateTime.UtcNow.AddSeconds(0.5f));
+			Assert.AreEqual(1, aVal, "Invalid aVal after the first update");
+			Assert.AreEqual(2, cVal, "Invalid cVal after the first update");
+			Assert.AreEqual(1, bVal, "b should have executed the first time");
+			Assert.IsFalse(queue.Items.Contains(b), "b should no longer be on the queue");
+
+			queue.Update(DateTime.UtcNow.AddSeconds(1f));
+			Assert.AreEqual(2, aVal, "Invalid aVal after the second update");
+			Assert.AreEqual(4, cVal, "Invalid cVal after the second update");
+			Assert.AreEqual(1, bVal, "b should not have executed again");
+			Assert.IsFalse(queue.Items.Contains(b), "b should still not be on the queue");
+		}
+
+
+
 		[Test()]
 		public void TestInvalidRemove()
 		{
