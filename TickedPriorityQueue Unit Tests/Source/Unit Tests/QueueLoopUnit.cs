@@ -14,7 +14,7 @@ namespace TickedPriorityQueueUnitTests
 		int testAgainstDefaultLoopCount = -1;
 		
 		[Test()]
-		public void TestLoop ()
+		public void TestLoop()
 		{
 			testLoopCount = -1;
 			TickedQueue queue = new TickedQueue();

@@ -235,7 +235,7 @@ namespace TickedPriorityQueue
 			_workingQueue.Clear();
 			_workingQueue.AddRange(_queue);
 			
-			for (int i = 0; i < _workingQueue.Count; i++)
+			for (var i = 0; i < _workingQueue.Count; i++)
 			{
 				if (found > MaxProcessedPerUpdate) break;
 				
