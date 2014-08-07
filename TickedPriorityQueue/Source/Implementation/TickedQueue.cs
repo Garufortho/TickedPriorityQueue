@@ -12,7 +12,7 @@ namespace TickedPriorityQueue
 	/// Will never tick an item more than once in a frame, and sets the updated tick
 	/// time to the sum of processed time and the object's Tick Length.
 	/// And and Update can use a user provided DateTime for the current time, allowing for custom timing, e.g. for pausing the game.
-	/// </remarks>>
+	/// </remarks>
 	public sealed class TickedQueue
 	{
 		public static readonly int PreAllocateSize = 100;
@@ -51,7 +51,7 @@ namespace TickedPriorityQueue
 		/// Gets or sets the exception handler.
 		/// </summary>
 		/// <value>The exception handler.</value>
-		/// <remarks>>If the queue has an exception handler, any exceptions caught
+		/// <remarks>If the queue has an exception handler, any exceptions caught
 		/// will be sent to the handler - otherwise they are thrown</remarks>
 		public Action<Exception, ITicked> TickExceptionHandler { get; set; }
 		
@@ -90,9 +90,9 @@ namespace TickedPriorityQueue
 		public int QueueCount { get { return _queue.Count; } }
 
 		/// <summary>
-		/// Returns an IEnumerable for the items on the queue
+		/// Returns an IEnumerable for the ticked items on the queue
 		/// </summary>
-		/// <value>The items.</value>
+		/// <value>The ticked items.</value>
 		public IEnumerable<ITicked> Items 
 		{ 
 			get 
@@ -194,7 +194,7 @@ namespace TickedPriorityQueue
 		/// <param name='ticked'>
 		/// The ITicked object to remove.
 		/// </param>
-		/// <returns>>True if the item was successfully removed, false otherwise</returns>
+		/// <returns>True if the item was successfully removed, false otherwise</returns>
 		public bool Remove(ITicked ticked)
 		{
 			bool found = false;
