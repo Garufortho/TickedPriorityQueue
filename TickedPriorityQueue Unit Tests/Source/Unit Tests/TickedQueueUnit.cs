@@ -33,11 +33,11 @@ namespace TickedPriorityQueueUnitTests{
 		{
 			InitializeTestValues();
 			TickedQueue queue = new TickedQueue();
-			TickedObject a = new TickedObject(CallbackSetTest1, 0);
+			TickedObject a = new TickedObject(CallbackSetTest1, 0, 0);
 			a.Priority = 0;
-			TickedObject b = new TickedObject(CallbackSetTest1, 2);
+			TickedObject b = new TickedObject(CallbackSetTest1, 0, 2);
 			b.Priority = 2;
-			TickedObject c = new TickedObject(CallbackSetTest1, 1);
+			TickedObject c = new TickedObject(CallbackSetTest1, 0, 1);
 			c.Priority = 1;
 			
 			queue.Add(a);
@@ -291,14 +291,13 @@ namespace TickedPriorityQueueUnitTests{
 		[Test()]
 		public void TestInvalidRemove()
 		{
-			TickedQueue queue = new TickedQueue();
-			TickedObject a = new TickedObject(Callback3, 0);
-			a.TickLength = 1;
+			var queue = new TickedQueue();
+			var a = new TickedObject(Callback3, 1);
 			queue.Add(a);
 
-			var b = new TickedObject(Callback3, 0);
+			var b = new TickedObject(Callback3);
 
-			bool result = queue.Remove(b);
+			var result = queue.Remove(b);
 
 			Assert.IsFalse(result, "Call to remove the B should have returned false");
 		}
@@ -306,10 +305,9 @@ namespace TickedPriorityQueueUnitTests{
 		[Test()]
 		public void TestNoExceptionHandler()
 		{
-			var queue = new TickedQueue();
-			queue.MaxProcessedPerUpdate = 1;
+			var queue = new TickedQueue {MaxProcessedPerUpdate = 1};
 
-			int aVal = 0;
+		    int aVal = 0;
 			var a = new TickedObject((x => aVal++), 0);
 			var b = new TickedObject((x => {throw new NotImplementedException("Not implemented method");}), 0);
 
@@ -320,7 +318,7 @@ namespace TickedPriorityQueueUnitTests{
 			queue.Update(DateTime.UtcNow.AddSeconds(0.5f));
 			Assert.AreEqual(1, aVal, "Invalid aVal after the first update");
 
-			TestDelegate testDelegate = (delegate() { queue.Update(DateTime.UtcNow.AddSeconds(1f)); } );
+			TestDelegate testDelegate = (() => queue.Update(DateTime.UtcNow.AddSeconds(1f)));
 
 			Assert.Throws<NotImplementedException>(testDelegate, "Expected a not-implemented exception");
 			Assert.AreEqual(1, aVal, "Invalid aVal after the third update");
@@ -335,23 +333,21 @@ namespace TickedPriorityQueueUnitTests{
 			Exception raised = null;
 			ITicked itemException = null;
 
-			var queue = new TickedQueue();
-			queue.MaxProcessedPerUpdate = 1;
-			queue.TickExceptionHandler += delegate(Exception e, ITicked t) { raised = e; itemException = t; };
+			var queue = new TickedQueue {MaxProcessedPerUpdate = 1};
+		    queue.TickExceptionHandler += delegate(Exception e, ITicked t) { raised = e; itemException = t; };
 
-			int aVal = 0;
+			var aVal = 0;
 			var a = new TickedObject((x => aVal++), 0);
 			var b = new TickedObject((x => {throw new NotImplementedException("HELLO WORLD!");}), 0);
 
-
-			queue.Add(a, true);
-			queue.Add(b, true);
+            queue.Add(a, true);
+            queue.Add(b, DateTime.UtcNow.AddMilliseconds(1), true);
 
 			// Verify the queue works as expected
 			queue.Update(DateTime.UtcNow.AddSeconds(0.5f));
 			Assert.AreEqual(1, aVal, "Invalid aVal after the first update");
 
-			TestDelegate testDelegate = (delegate() { queue.Update(DateTime.UtcNow.AddSeconds(1f)); } );
+			TestDelegate testDelegate = (() => queue.Update(DateTime.UtcNow.AddSeconds(1f)));
 
 			Assert.DoesNotThrow(testDelegate, "Did not expect any exceptions to be thrown");
 			Assert.AreEqual(1, aVal, "Invalid aVal after the third update");
@@ -370,13 +366,13 @@ namespace TickedPriorityQueueUnitTests{
 			int aVal = 0;
 			var a = new TickedObject((x => aVal++), 0);
 
-			int bVal = 0;
+		    int bVal = 0;
 			var b = new TickedObject((x => bVal++), 0);
 
-			int cVal = 0;
+		    int cVal = 0;
 			var c = new TickedObject((x => cVal++), 0);
 
-			queue.Add(a, true);
+		    queue.Add(a, true);
 			queue.Add(b, true);
 			queue.Add(c, true);
 

@@ -11,7 +11,7 @@ namespace TickedPriorityQueueUnitTests
 		bool stagnantCalled = false;
 		
 		[Test()]
-		public void TestForStagnation ()
+		public void TestForStagnation()
 		{
 			TickedQueue queue = new TickedQueue();
 			queue.MaxProcessedPerUpdate = 100;
@@ -21,8 +21,7 @@ namespace TickedPriorityQueueUnitTests
 			
 			for (int i = 0; i < 10000; ++i)
 			{
-				TickedObject obj = new TickedObject(Callback, i);
-				obj.TickLength = 0.5f;
+				var obj = new TickedObject(Callback, 0.5f, i);
 				queue.Add(obj, time);
 			}
 			

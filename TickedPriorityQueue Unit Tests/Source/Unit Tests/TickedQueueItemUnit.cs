@@ -9,7 +9,7 @@ namespace TickedPriorityQueue {
 		[Test()]
 		public void TestCase ()
 		{
-			TickedObject obj = new TickedObject(null, null);
+			TickedObject obj = new TickedObject(null);
 			obj.Priority = 6;
 			obj.TickLength = 7;
 			TickedQueueItem item = new TickedQueueItem(obj);
@@ -28,7 +28,7 @@ namespace TickedPriorityQueue {
 		[Test()]
 		public void TestTickTimeReset()
 		{
-			TickedObject obj = new TickedObject(null, null);
+			TickedObject obj = new TickedObject(null);
 			obj.Priority = 6;
 			obj.TickLength = 7;
 			var now = DateTime.UtcNow;

@@ -260,7 +260,7 @@ namespace TickedPriorityQueue
 						}
 						else
 						{
-							throw e;
+							throw;
 						}
 					}
 				}

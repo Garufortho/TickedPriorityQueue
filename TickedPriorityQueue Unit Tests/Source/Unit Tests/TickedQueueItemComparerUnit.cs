@@ -10,9 +10,9 @@ namespace TickedPriorityQueueUnitTests
 		[Test()]
 		public void TestPriorityCompare ()
 		{
-			TickedObject a = new TickedObject(Callback, 0);
+			TickedObject a = new TickedObject(Callback, 0, 0);
 			a.Priority = 5;
-			TickedObject b = new TickedObject(Callback, 1);
+			TickedObject b = new TickedObject(Callback, 0, 1);
 			b.Priority = 2;
 			
 			DateTime time = DateTime.UtcNow;
@@ -31,10 +31,10 @@ namespace TickedPriorityQueueUnitTests
 		[Test()]
 		public void TestTickTimeCompare()
 		{
-			TickedObject a = new TickedObject(Callback, 0);
+			TickedObject a = new TickedObject(Callback, 0, 0);
 			a.Priority = 2;
 			a.TickLength = 2;
-			TickedObject b = new TickedObject(Callback, 1);
+			TickedObject b = new TickedObject(Callback, 0, 1);
 			b.Priority = 2;
 			b.TickLength = 1;
 			
@@ -51,10 +51,10 @@ namespace TickedPriorityQueueUnitTests
 		[Test()]
 		public void TestTimeCompare()
 		{
-			TickedObject a = new TickedObject(Callback, 0);
+			TickedObject a = new TickedObject(Callback, 0, 0);
 			a.Priority = 2;
 			a.TickLength = 2;
-			TickedObject b = new TickedObject(Callback, 1);
+			TickedObject b = new TickedObject(Callback, 0, 1);
 			b.Priority = 2;
 			b.TickLength = 1;
 			
