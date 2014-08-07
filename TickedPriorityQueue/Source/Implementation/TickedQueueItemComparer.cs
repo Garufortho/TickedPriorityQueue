@@ -9,7 +9,7 @@ namespace TickedPriorityQueue
 	internal sealed class TickedQueueItemComparer : IComparer<TickedQueueItem>
 	{
 		/// <summary>
-		/// <see cref="System.Collections.Generic.IComparer{TickedPriorityQueue.TickedQueueItem}"/> implementation for sorting <see cref="TickedPriorityQueue.TickedQueueItem"/> instances by Priority, then TickLength for equal priorities.
+		/// <see cref="System.Collections.Generic.IComparer{TickedQueueItem}"/> implementation for sorting <see cref="TickedPriorityQueue.TickedQueueItem"/> instances by Priority, then TickLength for equal priorities.
 		/// </summary>
 		/// <param name='a'>
 		/// First item.
@@ -23,7 +23,7 @@ namespace TickedPriorityQueue
 		}
 		
 		/// <summary>
-		/// <see cref="System.Collections.Generic.IComparer{TickedPriorityQueue.TickedQueueItem}"/> implementation for sorting <see cref="TickedPriorityQueue.TickedQueueItem"/> instances by Priority, then TickLength for equal priorities.
+		/// <see cref="System.Collections.Generic.IComparer{TickedQueueItem}"/> implementation for sorting <see cref="TickedPriorityQueue.TickedQueueItem"/> instances by Priority, then TickLength for equal priorities.
 		/// </summary>
 		/// <param name='a'>
 		/// First item.
@@ -33,14 +33,12 @@ namespace TickedPriorityQueue
 		/// </param>
 		public static int DefaultCompare(TickedQueueItem a, TickedQueueItem b)
 		{
-			int comp = a.Priority.CompareTo(b.Priority);
-			if (comp == 0)
+		    var result = a.Priority.CompareTo(b.Priority);
+            if (result == 0)
 			{
-				int ret = a.NextTickTime.CompareTo(b.NextTickTime);
-				return ret;
+				result = a.NextTickTime.CompareTo(b.NextTickTime);
 			}
-			
-			else return comp;
+		    return result;
 		}
 	}
 }
