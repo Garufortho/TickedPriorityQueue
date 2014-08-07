@@ -20,23 +20,15 @@ namespace TickedPriorityQueue
 		/// <param name='elapsedCallback'>
 		/// Elapsed callback. Delegate declared as void OnTickElapsed(object userData).
 		/// </param>
-		public TickedObject(OnTickElapsed elapsedCallback) : this(elapsedCallback, null)
-		{
-		}
-		
-		/// <summary>
-		/// Initializes a new instance of the <see cref="TickedPriorityQueue.TickedObject"/> class.
-		/// </summary>
-		/// <param name='elapsedCallback'>
-		/// Elapsed callback. Delegate declared as void OnTickElapsed(object userData).
-		/// </param>
-		/// <param name='userData'>
+        /// <param name="tickLength">Tick length</param>
+        /// <param name='userData'>
 		/// Data which is given back through the callback, used for identification purposes.
 		/// </param>
-		public TickedObject(OnTickElapsed elapsedCallback, object userData)
+		public TickedObject(OnTickElapsed elapsedCallback, float tickLength = 0, object userData = null)
 		{
 			TickElapsed = elapsedCallback;
-			UserData = userData;
+            TickLength = tickLength;
+            UserData = userData;
 		}
 		
 		/// <summary>

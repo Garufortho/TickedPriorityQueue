@@ -12,7 +12,7 @@ namespace TickedPriorityQueue
 	/// Will never tick an item more than once in a frame, and sets the updated tick
 	/// time to the sum of processed time and the object's Tick Length.
 	/// And and Update can use a user provided DateTime for the current time, allowing for custom timing, e.g. for pausing the game.
-	/// </remarks>>
+	/// </remarks>
 	public sealed class TickedQueue
 	{
 		public static readonly int PreAllocateSize = 100;
@@ -46,6 +46,14 @@ namespace TickedPriorityQueue
 		/// Pre-allocated working queue from which items will be evaluated.
 		/// </summary>
 		private List<TickedQueueItem> _workingQueue;
+
+		/// <summary>
+		/// Gets or sets the exception handler.
+		/// </summary>
+		/// <value>The exception handler.</value>
+		/// <remarks>If the queue has an exception handler, any exceptions caught
+		/// will be sent to the handler - otherwise they are thrown</remarks>
+		public Action<Exception, ITicked> TickExceptionHandler { get; set; }
 		
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TickedPriorityQueue.TickedQueue"/> class.
@@ -80,6 +88,18 @@ namespace TickedPriorityQueue
 		/// Gets the internal queue count.
 		/// </summary>
 		public int QueueCount { get { return _queue.Count; } }
+
+		/// <summary>
+		/// Returns an IEnumerable for the ticked items on the queue
+		/// </summary>
+		/// <value>The ticked items.</value>
+		public IEnumerable<ITicked> Items 
+		{ 
+			get 
+			{ 
+				return _queue.Select(x => x.Ticked); 
+			} 
+		}
 		
 		/// <summary>
 		/// Add the specified ticked object to the queue.
@@ -134,8 +154,7 @@ namespace TickedPriorityQueue
 		/// </param>
 		public void Add(ITicked ticked, DateTime currentTime, bool looped)
 		{
-			TickedQueueItem item = new TickedQueueItem(ticked, currentTime);
-			item.Loop = looped;
+			var item = new TickedQueueItem(ticked, currentTime, looped);
 			Add(item, currentTime);
 		}
 		
@@ -174,16 +193,21 @@ namespace TickedPriorityQueue
 		/// <param name='ticked'>
 		/// The ITicked object to remove.
 		/// </param>
-		public void Remove(ITicked ticked)
+		/// <returns>True if the item was successfully removed, false otherwise</returns>
+		public bool Remove(ITicked ticked)
 		{
+			bool found = false;
 			foreach(var item in _queue)
 			{
 				if (item.ContainsTicked(ticked))
 				{
-					_queue.Remove(item);
+					// In case the item is added to a work queue
+					item.IsActive = false;	
+					found = _queue.Remove(item);
 					break;
 				}
 			}
+			return found;
 		}
 		
 		/// <summary>
@@ -205,18 +229,18 @@ namespace TickedPriorityQueue
 		{
 			if (IsPaused) return;
 
-			int found = 0;			
+			int found = 1;
 			DateTime startTime = DateTime.UtcNow;
 						
 			_workingQueue.Clear();
 			_workingQueue.AddRange(_queue);
 			
-			for (int i = 0; i < _workingQueue.Count; i++)
+			for (var i = 0; i < _workingQueue.Count; i++)
 			{
 				if (found > MaxProcessedPerUpdate) break;
 				
 				var item  = _workingQueue[i];
-				if (item.CheckTickReady(currentTime))
+				if (item.IsActive && item.CheckTickReady(currentTime))
 				{
 					++found;
 					_queue.Remove(item);
@@ -224,7 +248,21 @@ namespace TickedPriorityQueue
 					{
 						Add(item, currentTime);
 					}
-					item.Tick(currentTime);
+					try
+					{
+						item.Tick(currentTime);
+					}
+					catch (Exception e)
+					{
+						if (TickExceptionHandler != null)
+						{
+							TickExceptionHandler(e, item.Ticked);
+						}
+						else
+						{
+							throw;
+						}
+					}
 				}
 				
 				if (DateTime.UtcNow - startTime > _maxProcessingTimePerUpdate)
