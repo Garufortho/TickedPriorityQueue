@@ -12,7 +12,7 @@ namespace TickedPriorityQueue
 		
 		internal void ResetTickFromTime(DateTime time)
 		{
-			_nextTickTime = time.AddSeconds(_ticked.TickLength);	
+			_nextTickTime = time.AddSeconds(_ticked.TickLength);
 		}
 		
 		/// <summary>
@@ -37,16 +37,17 @@ namespace TickedPriorityQueue
 		/// <param name='currentTime'>
 		/// Current time.
 		/// </param>
+		/// <param name="isLooped">Indicates if this item should be looped</param>
 		/// <exception cref='ArgumentNullException'>
 		/// Is thrown when an argument passed to the constructor is invalid because it is <see langword="null" /> .
 		/// </exception>
-		public TickedQueueItem(ITicked ticked, DateTime currentTime)
+		public TickedQueueItem(ITicked ticked, DateTime currentTime, bool isLooped = true)
 		{
-			_ticked = ticked;
-			if (_ticked == null) throw new ArgumentNullException("Missing a valid ITicked reference");
+            if (ticked == null) throw new ArgumentNullException("Missing a valid ITicked reference");
+            _ticked = ticked;
 			ResetTickFromTime(currentTime);
 			Priority = _ticked.Priority;
-			Loop = true;
+			Loop = isLooped;
 			IsActive = true;
 		}
 		

@@ -154,8 +154,7 @@ namespace TickedPriorityQueue
 		/// </param>
 		public void Add(ITicked ticked, DateTime currentTime, bool looped)
 		{
-			TickedQueueItem item = new TickedQueueItem(ticked, currentTime);
-			item.Loop = looped;
+			var item = new TickedQueueItem(ticked, currentTime, looped);
 			Add(item, currentTime);
 		}
 		
